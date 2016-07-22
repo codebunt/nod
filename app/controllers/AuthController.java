@@ -18,6 +18,7 @@ public class AuthController extends Controller {
 	@SuppressWarnings("deprecation")
 	public Result signup(String provider) throws Exception {
         if(provider.equals("facebook")) {
+        	System.out.println(Play.application().configuration().getString("fb.client.id"));
         	String redirectUrl = URLEncoder.encode("https://www.facebook.com/dialog/oauth?client_id= 1731336217125828&redirect_uri=http://halageri.com:9000/signup/facebook");
         	String code = URLEncoder.encode(request().queryString().get("code")[0]);
         	String encoded = "https://graph.facebook.com/v2.3/oauth/access_token?client_id="+Play.application().configuration().getString("fb.client.id")
