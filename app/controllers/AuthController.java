@@ -27,7 +27,7 @@ public class AuthController extends Controller {
         	HttpResponse<JsonNode> asJson = Unirest.get(encoded).asJson();
         	JsonNode body = asJson.getBody();
 			System.out.println(body.toString());
-    		return ok(request().queryString().get("code")[0]);
+    		return ok(body.toString());
         }
         return ok();
     }
