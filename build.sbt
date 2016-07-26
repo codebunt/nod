@@ -9,7 +9,8 @@ scalaVersion := "2.11.7"
 libraryDependencies ++= Seq(
   javaJdbc,
   cache,
-  javaWs
+  javaWs,
+  "org.mongodb.morphia" % "morphia" % "1.1.1"
 )
 
 libraryDependencies += "com.mashape.unirest" % "unirest-java" % "1.4.9"

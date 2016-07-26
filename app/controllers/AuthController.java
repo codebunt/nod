@@ -1,35 +1,57 @@
 package controllers;
 
-import java.net.URLEncoder;
+import java.util.Map;
 
-import javax.inject.Inject;
+import com.codecraft.login.ProviderFactory;
+import com.codecraft.login.dto.AuthData;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-
-import play.Play;
-import play.libs.ws.WSClient;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 public class AuthController extends Controller {
-	@Inject WSClient ws;
-	@SuppressWarnings("deprecation")
 	public Result signup(String provider) throws Exception {
-        if(provider.equals("facebook")) {
-        	System.out.println(Play.application().configuration().getString("fb.client.id"));
-        	String redirectUrl = URLEncoder.encode("https://www.facebook.com/dialog/oauth?client_id= 1731336217125828&redirect_uri=http://halageri.com:9000/signup/facebook");
-        	String code = URLEncoder.encode(request().queryString().get("code")[0]);
-        	String encoded = "https://graph.facebook.com/v2.3/oauth/access_token?client_id="+Play.application().configuration().getString("fb.client.id")
-        			+"&redirect_uri="+redirectUrl
-        			+"&client_secret="+Play.application().configuration().getString("fb.client.secret")
-        			+"&code="+code;
-        	HttpResponse<JsonNode> asJson = Unirest.get(encoded).asJson();
-        	JsonNode body = asJson.getBody();
-			System.out.println(body.toString());
-    		return ok(body.toString());
-        }
-        return ok();
-    }
+		try {
+			long signup = ProviderFactory.get(provider).signup(getRequestData());
+			return ok("" + signup);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return unauthorized();
+		}
+	}
+	
+	public Result link(String provider, String user) throws Exception {
+		try {
+			long signup = ProviderFactory.get(provider).link(user,getRequestData());
+			return ok("" + signup);
+		} catch (Exception e) {
+			return unauthorized();
+		}
+	}
+	
+	public Result unlink(String provider, String user) throws Exception {
+		try {
+			long signup = ProviderFactory.get(provider).unlink(user,getRequestData());
+			return ok("" + signup);
+		} catch (Exception e) {
+			return unauthorized();
+		}
+	}
+	
+	public Result signin(String provider) throws Exception {
+		try {
+			AuthData authdata = ProviderFactory.get(provider).signin(getRequestData());
+			return ok(Json.toJson(authdata));
+		} catch (Exception e) {
+			return unauthorized();
+		}
+	}
+
+	private Map<String, String[]> getRequestData() {
+		if (request().method().equalsIgnoreCase("post") || request().method().equalsIgnoreCase("put")) {
+			return request().body().asFormUrlEncoded();
+		} else {
+			return request().queryString();
+		}
+	}
 }

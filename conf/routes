@@ -6,6 +6,17 @@
 GET     /                           controllers.HomeController.index
 
 GET     /signup/:provider                           controllers.AuthController.signup(provider)
+POST    /signup/:provider                           controllers.AuthController.signup(provider)
+GET     /signin/:provider                           controllers.AuthController.signin(provider)
+POST    /signin/:provider                           controllers.AuthController.signin(provider)
+
+GET		/user/:userid/link/:provider				controllers.AuthController.link(provider,userid)
+POST	/user/:userid/link/:provider			controllers.AuthController.link(provider,userid)
+
+GET		/user/:userid/unlink/:provider				controllers.AuthController.unlink(provider,userid)
+POST	/user/:userid/unlink/:provider			controllers.AuthController.unlink(provider,userid)
+
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
