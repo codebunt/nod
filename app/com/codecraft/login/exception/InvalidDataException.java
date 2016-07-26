@@ -10,4 +10,8 @@ public class InvalidDataException extends Exception {
 		super(msg);
 	}
 
+	public InvalidDataException() {
+		// TODO Auto-generated constructor stub
+	}
+
 }

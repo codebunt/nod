@@ -6,6 +6,8 @@ public class ProviderFactory {
 			return new FacebookProvider();
 		else if(provider.equals("local"))
 			return new LocalProvider();
+		else if(provider.equals("otp"))
+			return new OTPProvider();
 		return null;
 	}
 }

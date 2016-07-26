@@ -15,7 +15,7 @@ import settings.Global;
 public class LocalProvider extends AbstractLoginProvider implements LoginProvider {
 
 	@Override
-	public long signup(Map<String, String[]> data) throws InvalidDataException {
+	public AuthData signup(Map<String, String[]> data) throws InvalidDataException {
 		Local local = getByEmail(getValue(data, "email"));
 		if (local != null) {
 			throw new InvalidDataException("Email already exists");
@@ -31,7 +31,7 @@ public class LocalProvider extends AbstractLoginProvider implements LoginProvide
 		user.setId(local.getUserId());
 		Global.getMorphiaObject().getDatastore().save(user);
 		Global.getMorphiaObject().getDatastore().save(local);
-		return user.getId();
+		return token(user);
 	}
 
 	private Local getByEmail(String email) {

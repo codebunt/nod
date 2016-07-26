@@ -12,11 +12,11 @@ import play.mvc.Result;
 public class AuthController extends Controller {
 	public Result signup(String provider) throws Exception {
 		try {
-			long signup = ProviderFactory.get(provider).signup(getRequestData());
-			return ok("" + signup);
+			AuthData signup = ProviderFactory.get(provider).signup(getRequestData());
+			return ok(Json.toJson(signup));
 		} catch (Exception e) {
 			e.printStackTrace();
-			return unauthorized();
+			return unauthorized(AuthData.error(e));
 		}
 	}
 	
@@ -25,7 +25,7 @@ public class AuthController extends Controller {
 			long signup = ProviderFactory.get(provider).link(user,getRequestData());
 			return ok("" + signup);
 		} catch (Exception e) {
-			return unauthorized();
+			return unauthorized(AuthData.error(e));
 		}
 	}
 	
@@ -34,7 +34,7 @@ public class AuthController extends Controller {
 			long signup = ProviderFactory.get(provider).unlink(user,getRequestData());
 			return ok("" + signup);
 		} catch (Exception e) {
-			return unauthorized();
+			return unauthorized(AuthData.error(e));
 		}
 	}
 	
@@ -43,7 +43,7 @@ public class AuthController extends Controller {
 			AuthData authdata = ProviderFactory.get(provider).signin(getRequestData());
 			return ok(Json.toJson(authdata));
 		} catch (Exception e) {
-			return unauthorized();
+			return unauthorized(AuthData.error(e));
 		}
 	}
 

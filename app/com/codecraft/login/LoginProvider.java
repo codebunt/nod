@@ -6,7 +6,7 @@ import com.codecraft.login.dto.AuthData;
 import com.codecraft.login.exception.InvalidDataException;
 
 public interface LoginProvider {
-	public long signup(Map<String, String[]> data) throws InvalidDataException;
+	public AuthData signup(Map<String, String[]> data) throws InvalidDataException;
 	
 	public AuthData signin(Map<String, String[]> data) throws InvalidDataException;
 	
